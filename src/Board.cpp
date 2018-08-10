@@ -1,5 +1,7 @@
 #include "Figure.cpp"
 #include <iostream>
+#include <io.h>
+#include <fcntl.h>
 using namespace std;
 
 class Board
@@ -9,13 +11,13 @@ class Board
     void initBoard();
     void printBoard();
     const static int BOARD_SIZE = 8;
-    Field prtFig [BOARD_SIZE][BOARD_SIZE];
+    Field prtFig[BOARD_SIZE][BOARD_SIZE];
     //Figure **prtFig;
 };
 
 Board::Board()
 {
-   /* prtFig = new Figure *[BOARD_SIZE];
+    /* prtFig = new Figure *[BOARD_SIZE];
     for (int i = 0; i < BOARD_SIZE; ++i)
         prtFig[i] = new Figure[BOARD_SIZE];
 
@@ -34,60 +36,79 @@ void Board::initBoard()
     //Pawns
     for (int i = 0; i < BOARD_SIZE; i++)
     {
-        prtFig[i][1].setIdentifier('P', 0);
-        prtFig[i][6].setIdentifier('P', 1);
+        prtFig[i][1].setIdentifier(L'\u2659', 0);
+        prtFig[i][6].setIdentifier(L'\u265F', 1);
     }
     //Rocks
-    prtFig[0][0].setIdentifier('R', 0);
-    prtFig[7][0].setIdentifier('R', 0);
-    prtFig[0][7].setIdentifier('R', 1);
-    prtFig[7][7].setIdentifier('R', 1);
+    prtFig[0][0].setIdentifier(L'\u2656', 0);
+    prtFig[7][0].setIdentifier(L'\u2656', 0);
+    prtFig[0][7].setIdentifier(L'\u265C', 1);
+    prtFig[7][7].setIdentifier(L'\u265C', 1);
     //Bishop
-    prtFig[1][0].setIdentifier('B', 0);
-    prtFig[6][0].setIdentifier('B', 0);
-    prtFig[1][7].setIdentifier('B', 1);
-    prtFig[6][7].setIdentifier('B', 1);
+    prtFig[2][0].setIdentifier(L'\u2657', 0);
+    prtFig[5][0].setIdentifier(L'\u2657', 0);
+    prtFig[2][7].setIdentifier(L'\u265D', 1);
+    prtFig[5][7].setIdentifier(L'\u265D', 1);
     //Knight
-    prtFig[2][0].setIdentifier('N', 0);
-    prtFig[5][0].setIdentifier('N', 0);
-    prtFig[2][7].setIdentifier('N', 1);
-    prtFig[5][7].setIdentifier('N', 1);
+    prtFig[1][0].setIdentifier(L'\u2658', 0);
+    prtFig[6][0].setIdentifier(L'\u2658', 0);
+    prtFig[1][7].setIdentifier(L'\u265E', 1);
+    prtFig[6][7].setIdentifier(L'\u265E', 1);
     //Queen/King
-    prtFig[3][0].setIdentifier('Q', 0);
-    prtFig[4][0].setIdentifier('K', 0);
-    prtFig[3][7].setIdentifier('Q', 1);
-    prtFig[4][7].setIdentifier('K', 1);
+    prtFig[3][0].setIdentifier(L'\u2655', 0);
+    prtFig[4][0].setIdentifier(L'\u2654', 0);
+    prtFig[3][7].setIdentifier(L'\u265B', 1);
+    prtFig[4][7].setIdentifier(L'\u265A', 1);
 }
 
 void Board::printBoard()
 //TODO: print row/col number
 //TODO: Back/White
 {
+    /*wcout << L"♔" << endl;
+    wcout << "dawdawsd";
+    cout << "deafas";
+    wchar_t test = L'\u2658';
+    wcout << test << endl;
+    wcout << L"\u2658" << endl;*/
+    _setmode(_fileno(stdout), _O_U16TEXT);
+    bool isWhite = false;
     for (int i = 0; i < BOARD_SIZE; i++)
     {
         int ascii = i + 17;
         char asciiChar = '0' + ascii;
-        cout << asciiChar << "| ";
+        wcout << asciiChar << "| ";
         for (int j = 0; j < BOARD_SIZE; j++)
         {
-            if (prtFig[i][j].getIdentifier() != ' ')
+            if (prtFig[i][j].getIdentifier() != 'x')
             {
-                cout << prtFig[i][j].getIdentifier();
+                wchar_t test = prtFig[i][j].getIdentifier();
+                wcout << test;
             }
             else
             {
-                cout << 'x';
+                if (isWhite)
+                {
+                    wcout << L'\u2589';
+                    isWhite = false;
+                }
+                else
+                {
+                    wcout << " ";
+                    isWhite = true;
+                }
             }
-            cout << ' ';
+            wcout << ' ';
         }
-        cout << endl;
+        wcout << endl;
+        isWhite = !isWhite;
     }
-    cout << "   ";
-    for(int i = 1; i < BOARD_SIZE+1; i++)
-        cout << "_ ";
-    cout << endl;
-    cout << "   ";
-    for(int i = 1; i < BOARD_SIZE+1; i++)
-        cout << i << " ";
-    cout << endl;
+    wcout << "   ";
+    for (int i = 1; i < BOARD_SIZE + 1; i++)
+        wcout << "_ ";
+    wcout << endl;
+    wcout << "   ";
+    for (int i = 1; i < BOARD_SIZE + 1; i++)
+        wcout << i << " ";
+    wcout << endl;
 }

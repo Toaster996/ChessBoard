@@ -5,12 +5,12 @@ class Field
 {
   public:
     Field();
-    Field(char ident);
-    void setIdentifier(char ident, int player);
-    char getIdentifier();
+    Field(wchar_t ident);
+    void setIdentifier(wchar_t ident, int player);
+    wchar_t getIdentifier();
 
   private:
-    char identifier;
+    wchar_t identifier;
     int playerNumber;
 };
 
@@ -19,17 +19,17 @@ Field::Field()
     identifier = 'x';
 }
 
-Field::Field(char ident)
+Field::Field(wchar_t ident)
 {
     identifier = ident;
 }
 
-void Field::setIdentifier(char ident, int player)
+void Field::setIdentifier(wchar_t ident, int player)
 {
     identifier = ident;
     playerNumber = player;
 }
 
-char Field::getIdentifier(){
+wchar_t Field::getIdentifier(){
     return identifier;
 }
