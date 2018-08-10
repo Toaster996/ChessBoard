@@ -8,11 +8,19 @@ class Board
 {
   public:
     Board();
-    void initBoard();
-    void printBoard();
+
     const static int BOARD_SIZE = 8;
     Field prtFig[BOARD_SIZE][BOARD_SIZE];
+
+    void initBoard();
+    void printBoard();
+    void pawnMove(int row, int col, bool pawnMove);
+
     //Figure **prtFig;
+    const static wchar_t PAWN_WHITE = L'\u2659';
+    const static wchar_t PAWN_BLACK = L'\u265F';
+
+  private:
 };
 
 Board::Board()
@@ -71,6 +79,7 @@ void Board::printBoard()
     wchar_t test = L'\u2658';
     wcout << test << endl;
     wcout << L"\u2658" << endl;*/
+
     _setmode(_fileno(stdout), _O_U16TEXT);
     bool isWhite = false;
     for (int i = 0; i < BOARD_SIZE; i++)
@@ -82,22 +91,20 @@ void Board::printBoard()
         {
             if (prtFig[i][j].getIdentifier() != 'x')
             {
-                wchar_t test = prtFig[i][j].getIdentifier();
-                wcout << test;
+                wcout << prtFig[i][j].getIdentifier();
             }
             else
             {
                 if (isWhite)
                 {
                     wcout << L'\u2589';
-                    isWhite = false;
                 }
                 else
                 {
                     wcout << " ";
-                    isWhite = true;
                 }
             }
+            isWhite = !isWhite;
             wcout << ' ';
         }
         wcout << endl;
@@ -111,4 +118,22 @@ void Board::printBoard()
     for (int i = 1; i < BOARD_SIZE + 1; i++)
         wcout << i << " ";
     wcout << endl;
+}
+
+void Board::pawnMove(int row, int col, bool isWhite)
+{
+    Field* previosField ;
+    if(isWhite)
+        previosField = &prtFig[row][col - 1];
+    else
+        previosField = &prtFig[row][col + 1];
+
+    wcout << "previous identifier " << previosField->getIdentifier() << endl;
+    if (isWhite && previosField->getIdentifier() == PAWN_WHITE ||
+        !isWhite && previosField->getIdentifier() == PAWN_BLACK)
+    {
+        wcout << &prtFig[row][col - 1] << endl;
+        wcout << previosField << endl;
+    }
+    previosField->setIdentifier(L'\u0023', isWhite);
 }
