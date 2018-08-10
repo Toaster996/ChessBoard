@@ -61,9 +61,13 @@ void Board::initBoard()
 
 void Board::printBoard()
 //TODO: print row/col number
+//TODO: Back/White
 {
     for (int i = 0; i < BOARD_SIZE; i++)
     {
+        int ascii = i + 17;
+        char asciiChar = '0' + ascii;
+        cout << asciiChar << "| ";
         for (int j = 0; j < BOARD_SIZE; j++)
         {
             if (prtFig[i][j].getIdentifier() != ' ')
@@ -78,4 +82,12 @@ void Board::printBoard()
         }
         cout << endl;
     }
+    cout << "   ";
+    for(int i = 1; i < BOARD_SIZE+1; i++)
+        cout << "_ ";
+    cout << endl;
+    cout << "   ";
+    for(int i = 1; i < BOARD_SIZE+1; i++)
+        cout << i << " ";
+    cout << endl;
 }
