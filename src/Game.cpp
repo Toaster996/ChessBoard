@@ -72,6 +72,7 @@ void Game::analyzeInput(string input)
     if (inputLength == 2)
     {
         analyzePawnMove(input);
+        prtBoard->printBoard();
     }
 }
 
@@ -80,7 +81,11 @@ void Game::analyzePawnMove(string input)
     char row = input.at(0);
     char col = input.at(1) - 1;
     int arrayPosRow = row - 97;
+    int arrayPosCol = (int) col - '0';
     wcout << "Field at " << arrayPosRow << " / " << col << endl;
     if (arrayPosRow < prtBoard->BOARD_SIZE && arrayPosRow >= 0)
-        prtBoard->pawnMove(arrayPosRow, col, isWhite);
+    {
+        wcout << "Field at " << arrayPosRow << " / " << arrayPosCol << endl;
+        prtBoard->pawnMove(arrayPosRow, arrayPosCol, isWhite);
+    }
 }

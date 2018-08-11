@@ -47,7 +47,9 @@ void Board::initBoard()
         prtFig[i][1].setIdentifier(L'\u2659', 0);
         prtFig[i][6].setIdentifier(L'\u265F', 1);
     }
+    //TODO: use constants
     //Rocks
+    prtFig[0][2].setIdentifier(L'\u006D', 0);
     prtFig[0][0].setIdentifier(L'\u2656', 0);
     prtFig[7][0].setIdentifier(L'\u2656', 0);
     prtFig[0][7].setIdentifier(L'\u265C', 1);
@@ -70,8 +72,6 @@ void Board::initBoard()
 }
 
 void Board::printBoard()
-//TODO: print row/col number
-//TODO: Back/White
 {
     /*wcout << L"♔" << endl;
     wcout << "dawdawsd";
@@ -122,6 +122,7 @@ void Board::printBoard()
 
 void Board::pawnMove(int row, int col, bool isWhite)
 {
+    wcout << "!!!! row: " << row << " col: " << col << endl;  
     Field* previosField ;
     if(isWhite)
         previosField = &prtFig[row][col - 1];
@@ -134,6 +135,12 @@ void Board::pawnMove(int row, int col, bool isWhite)
     {
         wcout << &prtFig[row][col - 1] << endl;
         wcout << previosField << endl;
+        previosField->setIdentifier(L'\u0078', isWhite);
     }
-    previosField->setIdentifier(L'\u0023', isWhite);
+    
+    Field* movedField = &prtFig[row][col];
+    if(isWhite)
+        movedField->setIdentifier(L'\u2659', isWhite);
+    else 
+        movedField->setIdentifier(L'\u265F', isWhite);
 }
