@@ -18,6 +18,7 @@ class Game
     string getUserInput();
     void analyzeInput(string input);
     void analyzePawnMove(string input);
+    void analyzeQueenMove(string input);
     //TODO: Timer (Thread)
 };
 
@@ -45,6 +46,7 @@ void Game::startGame()
         wcout << "Input was " << input.c_str() << endl;
         analyzeInput(input);
         wcout << endl;
+        prtBoard->printBoard();
         isWhite = !isWhite;
     }
 }
@@ -72,7 +74,25 @@ void Game::analyzeInput(string input)
     if (inputLength == 2)
     {
         analyzePawnMove(input);
-        prtBoard->printBoard();
+    }
+    else if (inputLength == 3)
+    {
+        char figure = input.at(0);
+        switch (figure)
+        {
+        case 'P':
+            input.erase(0, 1);
+            analyzePawnMove(input);
+            break;
+
+        case 'Q':
+            input.erase(0, 1);
+            analyzeQueenMove(input);
+            break;
+
+        default:
+            break;
+        }
     }
 }
 
@@ -81,11 +101,20 @@ void Game::analyzePawnMove(string input)
     char row = input.at(0);
     char col = input.at(1) - 1;
     int arrayPosRow = row - 97;
-    int arrayPosCol = (int) col - '0';
+    int arrayPosCol = (int)col - '0';
     wcout << "Field at " << arrayPosRow << " / " << col << endl;
     if (arrayPosRow < prtBoard->BOARD_SIZE && arrayPosRow >= 0)
     {
-        wcout << "Field at " << arrayPosRow << " / " << arrayPosCol << endl;
         prtBoard->pawnMove(arrayPosRow, arrayPosCol, isWhite);
     }
+}
+
+void Game::analyzeQueenMove(string input)
+{
+    int* prtCrrentPosition;
+    //TODO: A function in board, returning the wchar_t code for each figure with the knowledge of the figure and isWhite
+    //It could also make sense to save the Figure Q and isWhite in Field to get an easy mapping!!
+    if (isWhite)
+        prtCrrentPosition = prtBoard->getPositionOfFigure(prtBoard->QUEEN_WHITE);
+    wcout << prtCrrentPosition[0] << prtCrrentPosition[1] << endl;
 }

@@ -15,10 +15,13 @@ class Board
     void initBoard();
     void printBoard();
     void pawnMove(int row, int col, bool pawnMove);
+    int *getPositionOfFigure(wchar_t figure);
 
     //Figure **prtFig;
     const static wchar_t PAWN_WHITE = L'\u2659';
     const static wchar_t PAWN_BLACK = L'\u265F';
+    const static wchar_t QUEEN_WHITE = L'\u265B';
+    const static wchar_t QUEEN_BLACK = L'\u2655';
 
   private:
 };
@@ -120,11 +123,30 @@ void Board::printBoard()
     wcout << endl;
 }
 
+int *Board::getPositionOfFigure(wchar_t figure)
+{
+    for (int i = 0; i < BOARD_SIZE; i++)
+    {
+        for (int j = 0; j < BOARD_SIZE; j++)
+        {
+            ///TODO: delete
+            Field field = prtFig[i][j];
+            if(field.getIdentifier() == figure){
+                int *position = new int[2];
+                position[0] = i;
+                position[1] = j;
+                return position;
+            }
+        }
+    }
+    return new int(-1);
+}
+
 void Board::pawnMove(int row, int col, bool isWhite)
 {
-    wcout << "!!!! row: " << row << " col: " << col << endl;  
-    Field* previosField ;
-    if(isWhite)
+    wcout << "!!!! row: " << row << " col: " << col << endl;
+    Field *previosField;
+    if (isWhite)
         previosField = &prtFig[row][col - 1];
     else
         previosField = &prtFig[row][col + 1];
@@ -137,10 +159,10 @@ void Board::pawnMove(int row, int col, bool isWhite)
         wcout << previosField << endl;
         previosField->setIdentifier(L'\u0078', isWhite);
     }
-    
-    Field* movedField = &prtFig[row][col];
-    if(isWhite)
+
+    Field *movedField = &prtFig[row][col];
+    if (isWhite)
         movedField->setIdentifier(L'\u2659', isWhite);
-    else 
+    else
         movedField->setIdentifier(L'\u265F', isWhite);
 }
