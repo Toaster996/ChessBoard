@@ -6,12 +6,15 @@ class Field
   public:
     Field();
     Field(wchar_t ident);
-    void setIdentifier(wchar_t ident, int player);
+    void setIdentifier(wchar_t ident, char piece, bool isWhite);
+    void removeIdentifier();
+
     wchar_t getIdentifier();
 
   private:
     wchar_t identifier;
-    int playerNumber;
+    char piece;
+    bool isWhite;
 };
 
 Field::Field()
@@ -24,10 +27,17 @@ Field::Field(wchar_t ident)
     identifier = ident;
 }
 
-void Field::setIdentifier(wchar_t ident, int player)
+void Field::setIdentifier(wchar_t ident, char piece, bool isWhite)
 {
     identifier = ident;
-    playerNumber = player;
+    this->piece = piece;
+    this->isWhite = isWhite;
+}
+
+void Field::removeIdentifier(){
+    identifier = L'\u0078';
+    piece = 'x';
+    isWhite = false;
 }
 
 wchar_t Field::getIdentifier(){

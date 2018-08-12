@@ -18,12 +18,19 @@ class Board
     int *getPositionOfFigure(wchar_t figure);
 
     //Figure **prtFig;
-    const static wchar_t PAWN_WHITE = L'\u2659';
     const static wchar_t PAWN_BLACK = L'\u265F';
-    const static wchar_t QUEEN_WHITE = L'\u265B';
-    const static wchar_t QUEEN_BLACK = L'\u2655';
+    const static wchar_t PAWN_WHITE = L'\u2659';
+    const static wchar_t QUEEN_BLACK = L'\u265B';
+    const static wchar_t QUEEN_WHITE = L'\u2655';
+    const static wchar_t KING_BLACK = L'\u265A';
+    const static wchar_t KING_WHITE = L'\u2654';
+    const static wchar_t BISHOP_BLACK = L'\u265D';
+    const static wchar_t BISHOP_WHITE = L'\u2657';
+    const static wchar_t ROCK_BLACK = L'\u265C';
+    const static wchar_t ROCK_WHITE = L'\u2656';
 
-  private:
+    const static wchar_t UNICODE_X = L'\u0078';
+
 };
 
 Board::Board()
@@ -47,31 +54,29 @@ void Board::initBoard()
     //Pawns
     for (int i = 0; i < BOARD_SIZE; i++)
     {
-        prtFig[i][1].setIdentifier(L'\u2659', 0);
-        prtFig[i][6].setIdentifier(L'\u265F', 1);
+        prtFig[i][1].setIdentifier(PAWN_WHITE, 'P', true);
+        prtFig[i][6].setIdentifier(PAWN_BLACK, 'P', false);
     }
-    //TODO: use constants
     //Rocks
-    prtFig[0][2].setIdentifier(L'\u006D', 0);
-    prtFig[0][0].setIdentifier(L'\u2656', 0);
-    prtFig[7][0].setIdentifier(L'\u2656', 0);
-    prtFig[0][7].setIdentifier(L'\u265C', 1);
-    prtFig[7][7].setIdentifier(L'\u265C', 1);
+    prtFig[0][0].setIdentifier(ROCK_WHITE, 'R', true);
+    prtFig[7][0].setIdentifier(ROCK_WHITE, 'R', true);
+    prtFig[0][7].setIdentifier(ROCK_BLACK, 'R', false);
+    prtFig[7][7].setIdentifier(ROCK_BLACK, 'R', false);
     //Bishop
-    prtFig[2][0].setIdentifier(L'\u2657', 0);
-    prtFig[5][0].setIdentifier(L'\u2657', 0);
-    prtFig[2][7].setIdentifier(L'\u265D', 1);
-    prtFig[5][7].setIdentifier(L'\u265D', 1);
+    prtFig[2][0].setIdentifier(BISHOP_WHITE, 'B', true);
+    prtFig[5][0].setIdentifier(BISHOP_WHITE, 'B', true);
+    prtFig[2][7].setIdentifier(BISHOP_BLACK, 'B', false);
+    prtFig[5][7].setIdentifier(BISHOP_BLACK, 'B', false);
     //Knight
-    prtFig[1][0].setIdentifier(L'\u2658', 0);
-    prtFig[6][0].setIdentifier(L'\u2658', 0);
-    prtFig[1][7].setIdentifier(L'\u265E', 1);
-    prtFig[6][7].setIdentifier(L'\u265E', 1);
+    prtFig[1][0].setIdentifier(KING_WHITE, 'N', true);
+    prtFig[6][0].setIdentifier(KING_WHITE, 'N', true);
+    prtFig[1][7].setIdentifier(KING_BLACK, 'N', false);
+    prtFig[6][7].setIdentifier(KING_BLACK, 'N', false);
     //Queen/King
-    prtFig[3][0].setIdentifier(L'\u2655', 0);
-    prtFig[4][0].setIdentifier(L'\u2654', 0);
-    prtFig[3][7].setIdentifier(L'\u265B', 1);
-    prtFig[4][7].setIdentifier(L'\u265A', 1);
+    prtFig[3][0].setIdentifier(QUEEN_WHITE, 'Q', true);
+    prtFig[4][0].setIdentifier(KING_WHITE, 'K', true);
+    prtFig[3][7].setIdentifier(QUEEN_BLACK, 'Q', false);
+    prtFig[4][7].setIdentifier(KING_BLACK, 'K', false);
 }
 
 void Board::printBoard()
@@ -131,7 +136,8 @@ int *Board::getPositionOfFigure(wchar_t figure)
         {
             ///TODO: delete
             Field field = prtFig[i][j];
-            if(field.getIdentifier() == figure){
+            if (field.getIdentifier() == figure)
+            {
                 int *position = new int[2];
                 position[0] = i;
                 position[1] = j;
@@ -144,7 +150,6 @@ int *Board::getPositionOfFigure(wchar_t figure)
 
 void Board::pawnMove(int row, int col, bool isWhite)
 {
-    wcout << "!!!! row: " << row << " col: " << col << endl;
     Field *previosField;
     if (isWhite)
         previosField = &prtFig[row][col - 1];
@@ -157,12 +162,12 @@ void Board::pawnMove(int row, int col, bool isWhite)
     {
         wcout << &prtFig[row][col - 1] << endl;
         wcout << previosField << endl;
-        previosField->setIdentifier(L'\u0078', isWhite);
+        previosField->removeIdentifier();
     }
 
     Field *movedField = &prtFig[row][col];
     if (isWhite)
-        movedField->setIdentifier(L'\u2659', isWhite);
+        movedField->setIdentifier(PAWN_WHITE, 'P', isWhite);
     else
-        movedField->setIdentifier(L'\u265F', isWhite);
+        movedField->setIdentifier(PAWN_BLACK, 'P', isWhite);
 }

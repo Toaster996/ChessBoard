@@ -1,5 +1,6 @@
 #include "Board.cpp"
 #include <iostream>
+#include <string>
 using namespace std;
 
 class Game
